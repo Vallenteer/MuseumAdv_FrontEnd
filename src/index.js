@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter, Route, Switch} from 'react-router-dom';
+import {Redirect} from "react-router";
+import { Provider } from "react-redux";
+import {
+  Button
+} from "reactstrap";
 
 // Styles
-// Import Flag Icons Set
-import 'flag-icon-css/css/flag-icon.min.css';
 // Import Font Awesome Icons Set
 import 'font-awesome/css/font-awesome.min.css';
 // Import Simple Line Icons Set
@@ -17,10 +20,31 @@ import '../scss/core/_dropdown-menu-right.scss'
 // Containers
 import Full from './containers/Full/'
 
+//Login
+import Login from './views/Users/Login/Login.jsx';
+
+import store from './store.js';
+import Axios from 'axios';
+
+function CheckAuth() {
+  const storage = sessionStorage.MSMADVlt;
+  if(storage == null || storage == "") {
+    return <div>You are not authorized!
+          <Link to='/login'><Button color="primary" className="px-4">Click here to login</Button></Link>
+        </div>
+  }
+  else {
+    return <Redirect to='/dashboard' />
+  }
+}
+
 ReactDOM.render((
+  <Provider store={store}>
   <HashRouter>
     <Switch>
+      <Route path="/login" name="Login" component={Login} />
       <Route path="/" name="Home" component={Full}/>
     </Switch>
   </HashRouter>
+  </Provider>
 ), document.getElementById('root'));

@@ -31,6 +31,7 @@
     "webpack-dev-server": "2.9.7"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bootstrap": "4.0.0-beta.3",
     "chart.js": "2.7.1",
     "codemirror": "5.33.0",
@@ -52,7 +53,7 @@
     "react-router-dom": "4.2.2",
     "react-select": "1.2.1",
     "react-text-mask-hoc": "0.10.6",
-    "react-toastify": "3.2.2",
+    "react-toastify": "^3.2.2",
     "react-transition-group": "2.2.1",
     "reactstrap": "5.0.0-alpha.4",
     "redux": "^4.0.0",

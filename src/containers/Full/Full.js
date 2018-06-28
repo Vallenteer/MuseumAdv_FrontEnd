@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
+
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -9,9 +10,26 @@ import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard/';
 
+//Logout Component
+import Logout from '../../views/users/Logout/Logout.jsx';
+
+
+//redux
+import {connect} from "react-redux";
+import { fetchLogin, checkAuth } from '../../actions/auth-actions.jsx';
+
 class Full extends Component {
+  componentDidMount() {
+    this.props.checkAuth();
+  }
+
   render() {
-    return (
+
+    const guestLinks = (
+      <Redirect to="/login" />
+    );
+
+    const adminLinks = (
       <div className="app">
         <Header />
         <div className="app-body">
@@ -21,6 +39,10 @@ class Full extends Component {
             <Container fluid>
               <Switch>
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
+                <Route path="/logout" name="Logout" component={Logout}/>
+
+                {/* Routing for Management */}
+
                 <Redirect from="/" to="/dashboard"/>
               </Switch>
             </Container>
@@ -30,7 +52,38 @@ class Full extends Component {
         <Footer />
       </div>
     );
+
+    return this.props.isAuthenticated ? adminLinks : guestLinks;
+
+    // return (
+    //   <div className="app">
+    //     <Header />
+    //     <div className="app-body">
+    //       <Sidebar {...this.props}/>
+    //       <main className="main">
+    //         <Breadcrumb />
+    //         <Container fluid>
+    //           <Switch>
+    //             <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
+    //             <Redirect from="/" to="/dashboard"/>
+    //           </Switch>
+    //         </Container>
+    //       </main>
+    //       <Aside />
+    //     </div>
+    //     <Footer />
+    //   </div>
+    // );
   }
 }
 
-export default Full;
+function mapStateToProps(state) {
+  return {
+    authData: state.authStore.authData,
+    inProgress: state.authStore.inProgress,
+    isAuthenticated: state.authStore.isAuthenticated
+  }
+}
+
+
+export default connect(mapStateToProps, {checkAuth}) (Full);
