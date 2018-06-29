@@ -26,17 +26,17 @@ import Login from './views/Users/Login/Login.jsx';
 import store from './store.js';
 import Axios from 'axios';
 
-function CheckAuth() {
-  const storage = sessionStorage.MSMADVlt;
-  if(storage == null || storage == "") {
-    return <div>You are not authorized!
-          <Link to='/login'><Button color="primary" className="px-4">Click here to login</Button></Link>
-        </div>
-  }
-  else {
-    return <Redirect to='/dashboard' />
-  }
-}
+// function checkAuth() {
+//   const storage = sessionStorage.MSMADVlt;
+//   if(storage == null || storage == "") {
+//     return <div>You are not authorized!
+//           <Link to='/login'><Button color="primary" className="px-4">Click here to login</Button></Link>
+//         </div>
+//   }
+//   else {
+//     return <Redirect to='/dashboard' />
+//   }
+// }
 
 ReactDOM.render((
   <Provider store={store}>
