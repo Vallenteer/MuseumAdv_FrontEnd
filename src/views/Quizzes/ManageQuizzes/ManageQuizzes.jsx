@@ -9,6 +9,7 @@ import { BarLoader } from 'react-spinners';
 import moment, { now } from 'moment';
 
 import { fetchQuizzes } from '../../../actions/quiz-actions.jsx';
+import MuseumLoad from './MuseumLoad.jsx';
 
 class ManageQuizzes extends Component {
     constructor(props) {
@@ -26,6 +27,7 @@ class ManageQuizzes extends Component {
         this.state = {
             modalAdd: false,
             isAdding: false,
+            museums: []
           }
           this.toggleAddQuiz = this.toggleAddQuiz.bind(this);
     }
@@ -37,7 +39,15 @@ class ManageQuizzes extends Component {
 
     addQuiz(){
         return(
-            <div className="container">  
+            <div className="container">
+                <FormGroup row>
+                    <Col md="3">
+                        <Label htmlFor="text-input">Museum</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                        <MuseumLoad state= {this.state}/> 
+                    </Col>
+                </FormGroup>
                 <FormGroup row>
                     <Col md="3">
                         <Label htmlFor="text-input">Soal</Label>
@@ -97,7 +107,7 @@ class ManageQuizzes extends Component {
             data: {
                 museum_id: selectMuseum,
                 soal: addSoal,
-                jawban: addJawaban,
+                jawaban: addJawaban,
                 petunjuk: addPetunjuk
             }
         })
@@ -122,6 +132,57 @@ class ManageQuizzes extends Component {
 
     componentWillMount(){
         this.props.fetchQuizzes();
+        this.getMuseumList();
+    }
+
+    // componentDidMount(){
+    //     let initialMuseums = [];
+    //     axios.post('http://museumadv.azurewebsites.net/museum/list')
+    //     .then(function (response){
+    //         if(response.data != "" || response.data != null){
+    //             initialMuseums = response.data.map((museum) => {
+    //                 return museum
+    //             });
+    //         }
+    //         this.setState({
+    //             museums: initialMuseums,
+    //         })
+    //     })
+    // }
+
+    getMuseumList(){
+         var defaultMuseumsList = [];
+        // var museums;
+        var self = this;
+        axios.post('http://museumadv.azurewebsites.net/museum/list')
+        .then(function(response){
+            // console.log(response.data)
+            defaultMuseumsList = response.data.map((museum) =>{
+                return museum
+            });
+            console.log(defaultMuseumsList);
+            self.setState({
+                museums: defaultMuseumsList,
+            })
+            // self.setState({
+            //     defaultMuseumsList: response.data
+            // })
+            // console.log(defaultMuseumsList)
+        })
+        // fetch('https://swapi.co/api/planets/')
+        //     .then(response => {
+        //         return response.json();
+        //     })
+        //     .then(data => {
+        //     initialPlanets = data.results.map((planet) => {
+        //         return planet
+        //     });
+        //     console.log(initialPlanets);
+        //     this.setState({
+        //         planets: initialPlanets,
+        //     });
+        // });
+        
     }
 
     showDataTable() {
@@ -168,6 +229,7 @@ class ManageQuizzes extends Component {
                           </ModalBody>
                       </Modal>
                   </Row>
+                  
                   <br></br>
                   <hr></hr>
                   {this.props.inProgress ? <center><BarLoader color={'#123abc'} 
